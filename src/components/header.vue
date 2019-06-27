@@ -38,7 +38,12 @@
                     dangerouslyUseHTMLString: true,
                     message: "<h3>欢迎使用 Vue 弹窗功能！</h3>"
                 })
+            },
+
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
             }
+
         },
     }
 </script>
