@@ -1,16 +1,27 @@
 <template>
-    <el-menu :default-active="defaultIndex" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-        <el-menu-item index="0">首页</el-menu-item>
-        <el-submenu index='1'>
+    <el-menu :default-active="defaultIndex" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router>
+        <el-menu-item index="/">
+            首页
+        </el-menu-item>
+
+        <el-submenu index='/auth'>
             <template slot="title">
-                个性选项
+                学生
             </template>
-            <el-menu-item index='1-1' @click='reminder'>选项一</el-menu-item>
-            <el-menu-item index='1-2'>选项二</el-menu-item>
+            <el-menu-item index='/register'>注册</el-menu-item>
+            <el-menu-item index='/login'>登录</el-menu-item>
         </el-submenu>
 
-        <el-menu-item index='2'>注册</el-menu-item>
-        <el-menu-item index='3'>登录</el-menu-item>
+        <el-submenu index="/teacher">
+            <template slot="title">
+                老师
+            </template>
+            <el-menu-item index="/register_teacher">注册</el-menu-item>
+            <el-menu-item index="/login_teacher">登录</el-menu-item>
+        </el-submenu>
+        <el-menu-item index='/rank'>
+            排行榜
+        </el-menu-item>
     </el-menu>
 </template>
 
@@ -28,22 +39,11 @@
     export default {
         data() {
             return {
-                defaultIndex: '0'
+                defaultIndex: '/'
             }
         },
         methods: {
-            reminder() {
-                this.$notify({
-                    title: "HTML Pages",
-                    dangerouslyUseHTMLString: true,
-                    message: "<h3>欢迎使用 Vue 弹窗功能！</h3>"
-                })
-            },
-
-            handleSelect(key, keyPath) {
-                console.log(key, keyPath);
-            }
-
-        },
+        
+        }
     }
 </script>
