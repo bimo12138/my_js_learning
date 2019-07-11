@@ -24,4 +24,13 @@
 
 12. 创建唯一索引: CREATE UNIQUE INDEX index_name ON table_name(element_name)
 
-13. 
+13. 收回用户某个权限命令: REVOKE action【插入删除这些】(element_name) ON tablename FROM username
+
+14. 自然连接就是通过两个表的共有属性进行连接。所以R、S具有相同的属性
+
+15. SQL 通配符【字符串匹配】:
+    * % 任意0个或多个字符
+    * \- 任意单个字符
+    * [] 范围内的字符，类似正则
+
+16.  
