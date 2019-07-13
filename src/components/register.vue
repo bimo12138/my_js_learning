@@ -1,7 +1,7 @@
 <template>
        <el-row>
            <h1 class="content-title">学生注册</h1>
-            <el-col :xs="24" :sm="24" :lg="{span: 12, offset: 6}" :xl="{span: 8, offset: 8}">
+            <el-col :xs="{span: 18, offset: 3}" :sm="{span: 18, offset: 3}" :lg="{span: 12, offset: 6}" :xl="{span: 8, offset: 8}">
                 
                 <el-steps :active="step_num">
                     <el-step title="注册信息填写" description="基本信息填写"></el-step>
@@ -9,19 +9,19 @@
                     <el-step title="完成"></el-step>
                 </el-steps>
             </el-col>
-            <el-col :xs="24" :sm="24" :lg="{span: 12, offset: 6}" :xl="{span: 8, offset: 8}" class="form-container">
+            <el-col :xs="{span: 18, offset: 3}" :sm="{span: 18, offset: 3}" :lg="{span: 12, offset: 6}" :xl="{span: 8, offset: 8}" class="form-container">
                 <el-main v-if="step_num === 1">
-                    <el-form ref="register_form" :model="register_form" label-width="8em">
-                        <el-form-item label="学号">
+                    <el-form ref="register_form" :model="register_form" label-width="8em" :rules="rules">
+                        <el-form-item label="学号" prop="student_no">
                             <el-input v-model="register_form.student_no" placeholder="请输入学号: "></el-input>
                         </el-form-item>
-                        <el-form-item label="姓名">
+                        <el-form-item label="姓名" prop="student_name">
                             <el-input v-model="register_form.student_name" placeholder="请输入姓名: "></el-input>
                         </el-form-item>
-                        <el-form-item label="密码">
+                        <el-form-item label="密码" prop="student_password">
                             <el-input v-model="register_form.student_password" placeholder="请输入密码: " show-password></el-input>
                         </el-form-item>
-                        <el-form-item label="核实密码">
+                        <el-form-item label="核实密码" prop="student_password_check">
                             <el-input v-model="register_form.student_password_check" placeholder="请二次输入密码: " show-password></el-input>
                         </el-form-item>
                         <el-form-item>
@@ -34,8 +34,8 @@
                         <i class="el-icon-success"></i>
                         邮件已发送, 请等待验证！
                     </p>
-                    <el-form ref="email_active" :model="email_active" label-width="8em" v-else>
-                        <el-form-item label="邮箱">
+                    <el-form ref="email_active" :model="email_active" label-width="8em" v-else :rules="email_rules">
+                        <el-form-item label="邮箱" prop="email">
                             <el-input v-model="email_active.email" placeholder="请输入邮箱: "></el-input>
                         </el-form-item>
                         <el-form-item>
@@ -77,23 +77,95 @@ export default {
             register_form: {
                 student_no: "",
                 student_name: "",
-                stduent_password: "",
+                student_password: "",
                 student_password_check: ""
             },
             sended: false,
             email_active: {
                 email: ""
+            },
+            rules: {
+                student_no: [
+                    {required: true, message: "请输入学号", trigger: "blur"}
+                ],
+                student_name: [
+                    {required: true, message: "请输入姓名", trigger: "blur"}
+                ],
+                student_password: [
+                    {required: true, message: "请输入密码", trigger: "blur"}
+                ],
+                student_password_check: [
+                    {required: true, message: "请二次输入密码", trigger: "blur"}
+                ]
+            },
+            email_rules: {
+                email: [
+                    {required: true, message: "请输入邮箱", trigger: "blur"}
+                ]
             }
         }
     },
     methods: {
         onSubmit: function() {
             this.loading_status = true;
-            this.step_num = 2;
+            let no = this.register_form.student_no;
+            let username = this.register_form.student_name;
+            let password = this.register_form.student_password;
+            let password_check = this.register_form.student_password_check;
+            if (password !== password_check) {
+                console.log(password, password_check)
+                this.$message({
+                    message: "两次密码输入不一致",
+                    type: "warning"
+                })
+                this.loading_status = false;
+            }
+            else {
+                this.$axios.post("/apis/student", {
+                    "student_no": no,
+                    "student_name": username,
+                    "password": password
+                })
+                .then (response => {
+                    if(response.data.code === 200) {
+                        this.step_num = 2;
+                        this.$message({
+                            message: response.data.message,
+                            type: "success"
+                        })
+                    } else {
+                        this.$message({
+                            message: response.data.message,
+                            type: "warning"
+                        })
+                    }
+                })
 
+                .catch((error) => {
+                    this.$message({
+                        message: error,
+                        type: "warning"
+                    })
+                })
+
+                this.loading_status = false;
+            }
         },
         start_check: function() {
-            this.sended = true;
+            let no = this.register_form.student_no;
+            let email = this.email_active.email;
+            if (no && email) {
+                this.$axios.post("/apis/email", {
+                    student_no: no,
+                    email: email
+                })
+                .then(response => {
+                    this.sended = true
+                })
+                setTimeout(() => {
+                    this.step_num = 3;
+                }, 2000)
+            }
         }
     }
 }

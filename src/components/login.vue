@@ -42,15 +42,20 @@ export default {
     },
     methods: {
         onSubmit: function() {
-            this.$axios.post("/apis/student", {
-                "student_no": this.login_form.student_no,
-                "password": this.login_form.password
+            this.$axios.get("/apis/student", {
+                params: {
+                    "student_no": this.login_form.student_no,
+                    "password": this.login_form.password
+                }
             })
             .then(response => {
                 if(response.data.code === 200) {
                     this.$message({
                         message: response.data.message,
                         type: "success"
+                    })
+                    this.$router.push({
+                        path: "/"
                     })
                 }else {
                     this.$message({
