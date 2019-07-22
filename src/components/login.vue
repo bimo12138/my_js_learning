@@ -53,7 +53,8 @@ export default {
                     this.$message({
                         message: response.data.message,
                         type: "success"
-                    })
+                    }),
+                    this.$store.commit("auth_login", this.login_form.student_no);
                     this.$router.push({
                         path: "/"
                     })
@@ -63,7 +64,6 @@ export default {
                         type: "warning"
                     })
                 }
-
             })
             .catch((error) => {
                 alert(error);
@@ -72,53 +72,3 @@ export default {
     }
 }
 </script>
-<!--
-<template>
-    <div>
-        <el-table :data="dataP" stripe style="width: 80%; margin-left: auto; maargin-right: auto">
-            <el-table-column prop="username" label="username">
-
-            </el-table-column>
-            <el-table-column prop="telephone" label="telephone">
-
-            </el-table-column>
-            
-        </el-table>
-        <el-progress :text-inside="true" :stroke-width="18" :percentage=num color="rgba(num, num,num, 0.7)"></el-progress>
-        <el-button @click="status_change()">
-
-        </el-button>
-    </div> 
-    
-</template>
-
-<style>
-
-</style>
-
-<script>
-export default {
-    data() {
-        return {
-            dataP: [
-                {
-                    username: "笔墨",
-                    telephone: 17716612121
-                }
-            ],
-            num: 20
-        }
-    },
-    methods: {
-        status_change() {
-
-            let a = setInterval(() => {
-                this.num += 1;
-                if(this.num >= 100) clearInterval(a)
-            }, 100)
-        }
-    }   
-}
-
-</script>
--->
