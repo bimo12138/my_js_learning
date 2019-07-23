@@ -11,6 +11,9 @@ import student_info from "../components/student_pages/student_info.vue";
 import student from "../components/student_pages/student.vue";
 import student_take_exam from "../components/student_pages/student_take_exam.vue";
 import student_grade from "../components/student_pages/student_grade.vue";
+import teacher from "../components/teacher_pages/teacher.vue"
+import teacher_login from "../components/teacher_pages/teacher_login.vue"
+import teacher_info from "../components/teacher_pages/teacher_info.vue";
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -50,6 +53,19 @@ export default new Router({
         component: student_grade,
         name: "student_grade"
       }]
+    }, {
+      path: "/teacher",
+      component: teacher,
+      name: "teacher",
+      children: [{
+        path: "info",
+        component: teacher_info,
+        name: "teacher_info"
+      }]
+    }, {
+      path: "/teacher_login",
+      component: teacher_login,
+      name: "teacher_login"
     }
   ]
 })

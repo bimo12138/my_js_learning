@@ -1,10 +1,10 @@
 <template>
     <el-row>
-        <h1 id="title">学生登陆</h1>
+        <h1 id="title">教师登陆</h1>
         <el-col :xs="24" :sm="24" :lg="{span: 12, offset: 6}" :xl="{span: 8, offset: 8}" class="form-container">
             <el-form ref="login_form" :model="login_form" label-width="4em">
-                <el-form-item label="学号">
-                    <el-input v-model="login_form.student_no"></el-input>
+                <el-form-item label="职工号">
+                    <el-input v-model="login_form.teacher_no"></el-input>
                 </el-form-item>
                 <el-form-item label="密码">
                     <el-input v-model="login_form.password" show-password></el-input>
@@ -35,16 +35,16 @@ export default {
     data() {
         return {
             login_form: {
-                student_no: "",
+                teacher_no: "",
                 password: ""
             }
         }
     },
     methods: {
         onSubmit: function() {
-            this.$axios.get("/apis/student", {
+            this.$axios.get("/apis/teacher", {
                 params: {
-                    "student_no": this.login_form.student_no,
+                    "teacher_no": this.login_form.teacher_no,
                     "password": this.login_form.password
                 }
             })
@@ -55,8 +55,8 @@ export default {
                         type: "success"
                     }),
                     this.$store.commit("auth_login", {
-                        "username": this.login_form.student_no,
-                        "permission": 1
+                        "username": this.login_form.teacher_no,
+                        "permission": 2
                     });
                     this.$router.push({
                         path: "/"

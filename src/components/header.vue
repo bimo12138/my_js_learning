@@ -17,8 +17,8 @@
                 <template slot="title">
                     老师
                 </template>
-                <el-menu-item index="/register_teacher">注册</el-menu-item>
-                <el-menu-item index="/login_teacher">登录</el-menu-item>
+                <el-menu-item index="/teacher_register">注册</el-menu-item>
+                <el-menu-item index="/teacher_login">登录</el-menu-item>
             </el-submenu>
             <el-menu-item index='/rank'>
                 排行榜
@@ -30,29 +30,29 @@
                 首页
             </el-menu-item>
 
-                <el-submenu index='/student'>
+                <el-submenu index='/student' v-if="this.$store.state.permission === 1">
                     <template slot="title">
                         综合管理
                     </template>
-                    <el-menu-item index='/student/info'>个人信息查询</el-menu-item>
+                    <el-menu-item index='/student/info'>个人信息管理</el-menu-item>
                     <el-menu-item index='/student/exam'>参加考试</el-menu-item>
                     <el-menu-item index="/student/grade">考试成绩查询</el-menu-item>
                     <el-menu-item @click="dialogVisible = true">注销</el-menu-item>
                 </el-submenu>
 
-                <el-submenu index="/teacher">
+                <el-submenu index="/teacher" v-else-if="this.$store.state.permission === 2">
                     <template slot="title">
-                        老师
+                        综合管理
                     </template>
-                    <el-menu-item index="/register_teacher">注册</el-menu-item>
-                    <el-menu-item index="/login_teacher">登录</el-menu-item>
+                    <el-menu-item index="/teacher/info">个人信息管理</el-menu-item>
+                    <el-menu-item @click="dialogVisible = true">注销</el-menu-item>
                 </el-submenu>
 
             
             <el-menu-item index='/rank'> 
                 排行榜
             </el-menu-item>
-            <el-dialog title="确认" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <el-dialog title="确认" :visible.sync="dialogVisible" width="30%">
                 <h3 style="text-align: center">确定要退出当前账号吗？</h3>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogVisible = false">取消</el-button>
@@ -110,6 +110,10 @@
             },
             exit() {
                 this.$store.commit("logout");
+                this.dialogVisible = false;
+                this.$router.push({
+                    path: "/"
+                })
             },
             link_store() {
                 console.log(this.$store.state.username);         

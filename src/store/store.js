@@ -14,13 +14,13 @@ const store = new Vuex.Store({
         increment(state) {
             state.count ++;
         },
-        auth_login(state, auth_info, permission) {
-            sessionStorage.setItem("username", auth_info);
+        auth_login(state, auth_info) {
+            sessionStorage.setItem("username", auth_info.username);
             sessionStorage.setItem("login_status", true);
-            sessionStorage.setItem("permission", permission)
-            state.username = auth_info;
+            sessionStorage.setItem("permission", auth_info.permission);
+            state.username = auth_info.username;
             state.login_status = true;
-            state.permission = permission;
+            state.permission = auth_info.permission;
         },
         logout(state) {
             sessionStorage.removeItem("username");
@@ -40,7 +40,7 @@ const store = new Vuex.Store({
             if(!state.login_status) {
                 state.login_status = !!sessionStorage.getItem("login_status");
                 state.username = sessionStorage.getItem("username");
-                state.permission = sessionStorage.getItem("permission");
+                state.permission = Number(sessionStorage.getItem("permission"));
             }
             return state.login_status
         }
