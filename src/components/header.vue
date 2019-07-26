@@ -44,7 +44,8 @@
                     <template slot="title">
                         综合管理
                     </template>
-                    <el-menu-item index="/teacher/info">个人信息管理</el-menu-item>
+                    <el-menu-item index="/teacher/demo_exam">试卷模板及格式要求</el-menu-item>
+                    <el-menu-item index="/teacher/upload_exam">上传试卷</el-menu-item>
                     <el-menu-item @click="dialogVisible = true">注销</el-menu-item>
                 </el-submenu>
 
