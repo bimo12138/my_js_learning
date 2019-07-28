@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <el-form :model="exam_form" label-width="10em" :relus="rules">
+        <el-form :model="exam_form" label-width="10em" :rules="rules">
             <el-form-item label="考试名: " prop="exam_name">
                 <el-input v-model="exam_form.exam_name" placeholder="请输入考试名" class="medium_input"></el-input>
             </el-form-item>
@@ -18,10 +18,14 @@
                 <el-input v-model="exam_form.score" type="number" placeholder="请输入总分" class="short_input"></el-input>
             </el-form-item>
             <el-form-item label="文件上传: ">
-                <el-upload drag action="/apis/exam" :data="exam_form" :auto-upload="false">
+                <el-upload drag action="/apis/exam" :data="exam_form" :auto-upload="true" accept=".xls, .xlsx" :limit=1 :on-exceed="exceed_limit" :before-upload="base_check">
                     <i class="el-icon-upload"></i>
                     <div>将文件拖到此处，或<em>点击上传</em></div>
                 </el-upload>
+            </el-form-item>
+            <el-form-item class="btn-group">
+                <el-button>重置</el-button>
+                <el-button type="primary">提交</el-button>
             </el-form-item>
         </el-form>
         
@@ -50,6 +54,10 @@
         float: right;
         margin-right: 10em;
     }
+    .btn-group {
+        float: right;
+        padding-right: 5em;
+    }
 </style>
 <script>
 export default {
@@ -60,7 +68,8 @@ export default {
                 start_time: "",
                 end_time: "",
                 last: 120,
-                score: 100
+                score: 100,
+                author: this.$store.state.username
             },
             picker_options: {
                 shortcuts: [{
@@ -82,18 +91,29 @@ export default {
                     {require: true, message: "请输入考试名", trigger: "blur"}
                 ],
                 start_time: [
-                    {require: true, message: "请输入考试开始时间", trigger: "blur"}
+                    {type: "date", require: true, message: "请输入考试开始时间", trigger: "blur"}
                 ],
                 end_time: [
-                    {require: true, message: "请输入考试结束时间", trigger: "blur"}
+                    {type: "date", require: true, message: "请输入考试结束时间", trigger: "blur"}
                 ],
                 last: [
-                    {require: true, message: "请输入考试时间", trigger: "blur"}
+                    {type: "number", require: true, message: "请输入考试时间", trigger: "blur"}
                 ],
                 score: [
-                    {require: true, message: "请输入总分", trigger: "blur"}
+                    {type: "number", require: true, message: "请输入总分", trigger: "blur"}
                 ]
             }
+        }
+    },
+    methods: {
+        exceed_limit() {
+            alert("每次仅可上传一个文件！");
+        },
+        base_check(file) {
+            let upload_message = new FormData();
+            upload_message.append("exam_form", this.exam_form);
+            upload_message.append("file", file);
+            return true
         }
     }
 }
