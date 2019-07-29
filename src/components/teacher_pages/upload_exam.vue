@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <el-form :model="exam_form" label-width="10em" :rules="rules">
+        <el-form :model="exam_form" label-width="10em" :rules="rules" ref="exam_form">
             <el-form-item label="考试名: " prop="exam_name">
                 <el-input v-model="exam_form.exam_name" placeholder="请输入考试名" class="medium_input"></el-input>
             </el-form-item>
@@ -18,14 +18,14 @@
                 <el-input v-model="exam_form.score" type="number" placeholder="请输入总分" class="short_input"></el-input>
             </el-form-item>
             <el-form-item label="文件上传: ">
-                <el-upload drag action="/apis/exam" :data="exam_form" :auto-upload="true" accept=".xls, .xlsx" :limit=1 :on-exceed="exceed_limit" :before-upload="base_check">
+                <el-upload drag action="/apis/exam" :data="exam_form" :auto-upload="false" accept=".xls, .xlsx" :limit=1 :on-exceed="exceed_limit" ref="upload">
                     <i class="el-icon-upload"></i>
                     <div>将文件拖到此处，或<em>点击上传</em></div>
                 </el-upload>
             </el-form-item>
             <el-form-item class="btn-group">
                 <el-button>重置</el-button>
-                <el-button type="primary">提交</el-button>
+                <el-button type="primary" @click="submit_exam('exam_form')">提交</el-button>
             </el-form-item>
         </el-form>
         
@@ -87,9 +87,6 @@ export default {
                 }]
             },
             rules: {
-                exam_name: [
-                    {require: true, message: "请输入考试名", trigger: "blur"}
-                ],
                 start_time: [
                     {type: "date", require: true, message: "请输入考试开始时间", trigger: "blur"}
                 ],
@@ -101,6 +98,9 @@ export default {
                 ],
                 score: [
                     {type: "number", require: true, message: "请输入总分", trigger: "blur"}
+                ],
+                exam_name: [
+                    { require: true, message: "请输入考试名", trigger: "blur" }
                 ]
             }
         }
@@ -109,11 +109,34 @@ export default {
         exceed_limit() {
             alert("每次仅可上传一个文件！");
         },
-        base_check(file) {
-            let upload_message = new FormData();
-            upload_message.append("exam_form", this.exam_form);
-            upload_message.append("file", file);
-            return true
+        submit_exam(form) {
+            // 不知道为什么exam_name验证就是不出来
+            if (this.exam_form.exam_name === "") {
+                this.$message({
+                    message: "请输入试卷名",
+                    type: "warning"
+                })
+            } else {
+                this.$refs[form].validate((valid) => {
+                    if (valid) {
+                        this.$refs.upload.submit();
+                        this.$notify({
+                            title: "成功",
+                            message: this.exam_form.exam_name + "上传成功！",
+                            type: "success"
+                        })
+                        this.$router.push({
+                            path: "/"
+                        })
+                    }else {
+                        this.$message({
+                            message: "请把基本信息填写完整！",
+                            type: "warning"
+                        })
+                    }
+                })
+            }
+            
         }
     }
 }
