@@ -17,6 +17,7 @@ import teacher_info from "../components/teacher_pages/teacher_info.vue";
 import teacher_register from "../components/teacher_pages/teacher_register.vue";
 import demo_exam from "../components/teacher_pages/demo_exam.vue";
 import upload_exam from "../components/teacher_pages/upload_exam.vue";
+import my_exam from "../components/teacher_pages/my_exam.vue";
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -72,6 +73,10 @@ export default new Router({
         path: "upload_exam",
         component: upload_exam,
         name: "upload_exam"
+      }, {
+        path: "my_exam",
+        component: my_exam,
+        name: "my_exam"
       }]
     }, {
       path: "/teacher_login",

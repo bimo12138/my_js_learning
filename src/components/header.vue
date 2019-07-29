@@ -46,6 +46,7 @@
                     </template>
                     <el-menu-item index="/teacher/demo_exam">试卷模板及格式要求</el-menu-item>
                     <el-menu-item index="/teacher/upload_exam">上传试卷</el-menu-item>
+                    <el-menu-item index="/teacher/my_exam">我的试卷</el-menu-item>
                     <el-menu-item @click="dialogVisible = true">注销</el-menu-item>
                 </el-submenu>
 

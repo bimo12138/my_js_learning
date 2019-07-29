@@ -126,7 +126,7 @@ export default {
                             type: "success"
                         })
                         this.$router.push({
-                            path: "/"
+                            path: "/teacher/my_exam"
                         })
                     }else {
                         this.$message({
