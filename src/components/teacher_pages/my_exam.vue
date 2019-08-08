@@ -1,5 +1,6 @@
 <template>
     <div>
+        3
         <h1>我的试卷</h1>
         <el-table :data="exam_data" border empty-text="Null">
             <el-table-column label="考试序号" width="80" prop="exam_no"></el-table-column>
@@ -10,9 +11,9 @@
             <el-table-column label="考试总分" width="80" prop="score_count"></el-table-column>
             <el-table-column label="上传时间" width="240" prop="upload_time"></el-table-column>
             <el-table-column label="操作" width="180" align="center">
-                <template>
-                    <el-button type="primary" @click="delete_row"> 查看 </el-button>
-                    <el-button type="default">删除</el-button>
+                <template slot-scope="scope">
+                    <el-button type="primary" @click.native.prevent="detail(scope.$index)"> 查看 </el-button>
+                    <el-button type="default" @click.native.prevent="delete_row(scope.$index)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -59,8 +60,38 @@ export default {
             let second_format = date_format.getSeconds().toString();
             return year_format + "-" + mouth_format + "-" + day_format + " " + hour_format + ":" + minute_format + ":" + second_format;
         },
-        delete_row: (e) => {
-            console.log(e)
+        detail (e) {
+            let exam_no = this.exam_data[e].exam_no;
+            this.$router.push({
+                path: "/teacher/exam/" + exam_no
+            })
+        },
+        delete_row (e) {
+            let exam_no = this.exam_data[e].exam_no;
+            let exam_name = this.exam_data[e].exam_name;
+            
+            this.$axios.delete("/apis/exam", {
+                params: {
+                    exam_no: exam_no
+                }
+            })
+            .then((res) => {
+                console.log(res);
+                if(res.data.code === 200) {
+                    this.$notify({
+                        title: "成功",
+                        message: exam_name + res.data.message,
+                        type: "success"
+                    });
+                    this.exam_data.splice(e, 1);
+                } else {
+                    this.$notify({
+                        title: "警告",
+                        message: res.data.message,
+                        type: "warning"
+                    })
+                }
+            })
         }
     }
 }
