@@ -1,6 +1,5 @@
 <template>
     <div>
-        3
         <h1>我的试卷</h1>
         <el-table :data="exam_data" border empty-text="Null">
             <el-table-column label="考试序号" width="80" prop="exam_no"></el-table-column>

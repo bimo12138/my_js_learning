@@ -14,10 +14,21 @@
 <script>
 export default {
     data() {
-
+        exam_name: ""
     },
     created() {
+
         
+        let exam_no = this.$route.params.exam_no;
+        
+        this.$axios.get("/apis/exam_detail", {
+            params: {
+                exam_no
+            }
+        })
+        .then( (res) => {
+            console.log(res);
+        })
     }
 }
 </script>

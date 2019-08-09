@@ -79,7 +79,7 @@ export default new Router({
         component: my_exam,
         name: "my_exam"
       }, {
-        path: "exam/:no",
+        path: "exam/:exam_no",
         component: exam_detail,
         name: "exam_detail"
       }]
