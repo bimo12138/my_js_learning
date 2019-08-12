@@ -19,6 +19,8 @@ import demo_exam from "../components/teacher_pages/demo_exam.vue";
 import upload_exam from "../components/teacher_pages/upload_exam.vue";
 import my_exam from "../components/teacher_pages/my_exam.vue";
 import exam_detail from "../components/teacher_pages/exam_detail.vue";
+import student_exam from "../components/student_pages/student_exam.vue";
+
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -57,6 +59,10 @@ export default new Router({
         path: "grade",
         component: student_grade,
         name: "student_grade"
+      }, {
+        path: "exam/:exam_no",
+        component: student_exam,
+        name: "student_exam"
       }]
     }, {
       path: "/teacher",

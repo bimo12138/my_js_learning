@@ -13,7 +13,7 @@
                 <br>
                 <strong class="end-time-container">结束时间: {{item.end_time}}</strong>
             </div>
-            <el-button type="primary" class="active-btn">
+            <el-button type="primary" class="active-btn" @click="add_exam(item.exam_no)">
                 立刻参加
             </el-button>
         </el-card>
@@ -85,6 +85,11 @@ export default {
             let minute_format = date_format.getMinutes().toString();
             let second_format = date_format.getSeconds().toString();
             return year_format + "-" + mouth_format + "-" + day_format + " " + hour_format + ":" + minute_format + ":" + second_format;
+        },
+        add_exam(exam_no) {
+            this.$router.push({
+                path: "/student/exam/" + exam_no
+            })
         }
     }
 }
