@@ -20,7 +20,7 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="生日: ">
-                    <el-date-picker v-model="userInfo.birthday" type="date" class="short_input"></el-date-picker>
+                    <el-date-picker v-model="userInfo.birthday" type="date" class="short_input" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="身份证号码: ">
                     <el-input placeholder="请输入身份证号码" v-model="userInfo.id" class="medium_input"></el-input>
@@ -69,7 +69,7 @@ export default {
             err: false,
             err_message: "",
             userInfo: {},
-            commit_status: false
+            commit_status: false,
         }
     },
     created() {
@@ -107,7 +107,6 @@ export default {
                 }
             })
             .then(response => {
-                
                 if (response.data.code === 200) {
                     this.$store.state.auth_info = this.info_initial(response.data.message);
                     this.userInfo = this.$store.state.auth_info;
@@ -120,6 +119,15 @@ export default {
         },
         change_userInfo() {
             this.commit_status = true;
+            let myRe = new RegExp("[0-9]{17}[x1-9]{1}")
+            if (!myRe.test(this.userInfo.id)) {
+                this.$message({
+                    message: "身份证号码格式错误！",
+                    type: "warning"
+                })
+                this.commit_status = false;
+                return ;
+            }
             this.$axios.post("/apis/auth", {
                 "auth_no": this.$store.state.username,
                 "detail": this.userInfo

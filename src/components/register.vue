@@ -160,11 +160,35 @@ export default {
                     email: email
                 })
                 .then(response => {
-                    this.sended = true
+                    this.sended = true;
+                    if (response.data.code == 200) {
+                        this.sended = true;
+                        let current_get = setInterval((no) => {
+                            this.$axios.get("/apis/email_status", {
+                                params: {
+                                    "student_no": this.register_form.student_no
+                                }
+                            })
+                            .then( response => {
+                                if(response.data.code === 200) {
+                                    this.step_num ++;
+                                    clearInterval(current_get);
+                                }
+                            })
+                        }, 3000)
+                    } else {
+                        this.$message({
+                            message: response.data.message,
+                            type: "warning"
+                        })
+                    }
                 })
-                setTimeout(() => {
-                    this.step_num = 3;
-                }, 2000)
+                .catch((error) => {
+                    this.$message({
+                        message: error,
+                        type: "warning"
+                    })
+                })
             }
         }
     }
