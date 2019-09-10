@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <h1 class="title">排行榜</h1>
-        <el-select v-model="value" placeholder="请选择试卷">
-            <el-option v-for="item in options" :key="item.exam_no" :label="item.exam_name" :value="item.exam_no">
+        <el-select v-model="choose" placeholder="请选择试卷" @change="get_rank">
+            <el-option v-for="item in exam_list" :key="item.id" :label="item.label" :value="item.value">
 
             </el-option>
         </el-select>
@@ -51,12 +51,37 @@ export default {
                 test_username: "tom",
                 score: 77,
                 upload_time: "2019-8-7 07:06:32"
-            }]
+            }],
+            exam_list: [{
+                id: 1,
+                value: "测试试卷-1",
+                label: "测试试卷-1"
+            }, {
+                id: 2,
+                value: "测试试卷-2",
+                label: "测试试卷-2"
+            }],
+            choose: ""
         }
+    },
+    created() {
+        // 获取 列表
+        this.$axios.get("/apis/rank", {
+            params: {
+                "exam_no": this.exam_no
+            }
+        })
+        .then((response) => {
+            console.log(response);
+        })
     },
     methods: {
         deleteRow(index, rows) {
             rows.splice(index, 1);
+        },
+        get_rank() {
+            console.log("请求方法启动！");
+            console.log(this.choose);
         }
     }
 }

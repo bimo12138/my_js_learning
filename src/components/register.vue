@@ -9,7 +9,7 @@
                     <el-step title="完成"></el-step>
                 </el-steps>
             </el-col>
-            <el-col :xs="{span: 18, offset: 3}" :sm="{span: 18, offset: 3}" :lg="{span: 12, offset: 6}" :xl="{span: 8, offset: 8}" class="form-container">
+            <el-col :xs="24" :sm="{span: 18, offset: 3}" :lg="{span: 12, offset: 6}" :xl="{span: 8, offset: 8}" class="form-container">
                 <el-main v-if="step_num === 1">
                     <el-form ref="register_form" :model="register_form" label-width="8em" :rules="rules">
                         <el-form-item label="学号" prop="student_no">
