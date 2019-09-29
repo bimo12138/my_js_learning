@@ -4,6 +4,7 @@
         <el-card v-for="item in valid_exam" :key="item.exam_no" shadow="hover" class="card-container"> 
             <div slot="header">
                 <h3>{{item.exam_name}} <small class="upload-time"> 发布时间: {{item.upload_time}}</small></h3>
+
             </div>
             <div>
                 <strong class="exam-no">考试序号: {{item.exam_no}}</strong> <br>
@@ -31,6 +32,7 @@
         margin-bottom: 2em;
         font-size: 1.3em;
     }
+
     .upload-time {
         float: right;
         color: gray;
@@ -72,6 +74,11 @@ export default {
                     element.end_time = this.timestamp_to_time(element.end_time);
                 });
                 this.valid_exam = valid_exam;
+            } else {
+                this.$emit({
+                    type: "error",
+                    message: "数据获取失败"
+                })
             }
         })
     },

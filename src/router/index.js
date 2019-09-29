@@ -44,7 +44,7 @@ export default new Router({
       },
       {
         path: "exam",
-        component: resolve => require(["../components/student_pages/student_exam.vue"], resolve),
+        component: resolve => require(["../components/student_pages/student_take_exam.vue"], resolve),
         name: "student_take_exam"
       }, 
       {
@@ -54,7 +54,7 @@ export default new Router({
       }, 
       {
         path: "exam/:exam_no",
-        component: resolve => require(["../components/student_pages/student_take_exam.vue"], resolve),
+        component: resolve => require(["../components/student_pages/student_exam.vue"], resolve),
         name: "student_exam"
       }]
     }, 
