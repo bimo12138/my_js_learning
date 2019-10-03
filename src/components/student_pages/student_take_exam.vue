@@ -1,10 +1,10 @@
 <template>
     <div>
         <h1>可参加考试</h1>
+        <h2 class="error">{{error_message}}</h2>
         <el-card v-for="item in valid_exam" :key="item.exam_no" shadow="hover" class="card-container"> 
             <div slot="header">
                 <h3>{{item.exam_name}} <small class="upload-time"> 发布时间: {{item.upload_time}}</small></h3>
-
             </div>
             <div>
                 <strong class="exam-no">考试序号: {{item.exam_no}}</strong> <br>
@@ -54,6 +54,10 @@
         float: right;
         margin-bottom: 1em;
     }
+    .error {
+        color: red;
+        text-align: center;
+    }
 </style>
 
 
@@ -61,7 +65,8 @@
 export default {
     data() {
         return {
-            valid_exam: {}
+            valid_exam: {},
+            error_message: ""
         }
     },
     created() {
@@ -74,10 +79,13 @@ export default {
                     element.end_time = this.timestamp_to_time(element.end_time);
                 });
                 this.valid_exam = valid_exam;
-            } else {
-                this.$emit({
+            } else if(response.data.code === 400) {
+                this.error_message = "没有可以参加的考试"
+            }
+            else {
+                this.$message({
                     type: "error",
-                    message: "数据获取失败"
+                    message: "信息获取错误！"
                 })
             }
         })
@@ -95,7 +103,7 @@ export default {
         },
         add_exam(exam_no) {
             this.$router.push({
-                path: "/student/exam/" + exam_no
+                path: "/student/exam/" + exam_no + this.$store.state.username
             })
         }
     }

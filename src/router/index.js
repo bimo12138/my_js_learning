@@ -53,7 +53,7 @@ export default new Router({
         name: "student_grade"
       }, 
       {
-        path: "exam/:exam_no",
+        path: "exam/:exam_no:student_no",
         component: resolve => require(["../components/student_pages/student_exam.vue"], resolve),
         name: "student_exam"
       }]
