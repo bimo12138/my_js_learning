@@ -87,6 +87,11 @@ export default new Router({
         path: "exam/:exam_no",
         component: resolve => require(["../components/teacher_pages/exam_detail.vue"], resolve),
         name: "exam_detail"
+      },
+      {
+        path: "loading/:exam_no",
+        component: resolve => require(["../components/teacher_pages/loading_exam.vue"], resolve),
+        name: "loading_exam"
       }]
     }, 
     {

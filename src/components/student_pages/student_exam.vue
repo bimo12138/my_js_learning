@@ -34,7 +34,7 @@
         </div>
         <div class="button-group">
             <el-button type="warning" @click="save"> 保存 </el-button>
-            <el-button type="primary"> 提交 </el-button>
+            <el-button type="primary" @click="submit"> 提交 </el-button>
         </div>
         
 
@@ -84,6 +84,8 @@ export default {
     mounted() {
         let exam_no = this.$route.params.exam_no;
         let student_no = this.$route.params.student_no;
+        this.studnet_no = student_no;
+        this.exam_no = exam_no;
         this.$axios.get("/apis/take_exam", {
             params: {
                 exam_no: exam_no,
@@ -91,8 +93,7 @@ export default {
             }
         })
         .then(response => {
-            this.studnet_no = studnet_no;
-            this.exam_no = exam_no;
+            
             if(response.data.code === 200) {
                 this.available_exam_list = eval("(" + response.data.message+ ")");
                 this.loading = false;
@@ -115,6 +116,33 @@ export default {
             this.subjective_list = exam_list['subjective_list'];
         },
         save() {
+            this.$axios.put("/apis/take_exam", {
+                "student_no": this.studnet_no,
+                "exam_no": this.exam_no,
+                "content": {
+                    "choose_list": this.choose_list,
+                    "judge_list": this.judge_list,
+                    "input_list": this.input_list,
+                    "subjective_list": this.subjective_list
+                }
+            })
+            .then(response => {
+                if(response.data.code === 200) {
+                    this.$message({
+                        message: "保存成功！",
+                        type: "success"
+                    })
+                } else {
+                    this.$message.error("保存失败");
+                }
+            })
+            .then(() => {
+                this.$router.push({
+                    path: "/student/exam"
+                })
+            })
+        },
+        submit() {
             this.$axios.post("/apis/take_exam", {
                 "student_no": this.studnet_no,
                 "exam_no": this.exam_no,
@@ -126,7 +154,19 @@ export default {
                 }
             })
             .then(response => {
-                console.log(response);
+                if(response.data.code === 200) {
+                    this.$message({
+                        message: "提交成功！",
+                        type: "success"
+                    })
+                } else {
+                    this.$message.error("保存失败");
+                }
+            })
+            .then(() => {
+                this.$router.push({
+                    path: "/student/exam"
+                })
             })
         }
     }

@@ -6,12 +6,13 @@
             <el-table-column label="考试名" width="240" prop="exam_name"></el-table-column>
             <el-table-column label="考试开始时间" width="240" prop="start_time"></el-table-column>
             <el-table-column label="考试结束世界" width="240" prop="end_time"></el-table-column>
-            <el-table-column label="考试时间" width="80" prop="exam_time"></el-table-column>
-            <el-table-column label="考试总分" width="80" prop="score_count"></el-table-column>
+            <el-table-column label="考试时间" width="90" prop="exam_time"></el-table-column>
+            <el-table-column label="考试总分" width="90" prop="score_count"></el-table-column>
             <el-table-column label="上传时间" width="240" prop="upload_time"></el-table-column>
-            <el-table-column label="操作" width="180" align="center">
+            <el-table-column label="操作" width="280" align="center">
                 <template slot-scope="scope">
                     <el-button type="primary" @click.native.prevent="detail(scope.$index)"> 查看 </el-button>
+                    <el-button type="warning" @click.native.prevent="loading(scope.$index)">批阅</el-button>
                     <el-button type="default" @click.native.prevent="delete_row(scope.$index)">删除</el-button>
                 </template>
             </el-table-column>
@@ -90,6 +91,12 @@ export default {
                         type: "warning"
                     })
                 }
+            })
+        },
+        loading (e) {
+            let exam_no = this.exam_data[e].exam_no;
+            this.$router.push({
+                path: "/teacher/loading/" + exam_no 
             })
         }
     }
