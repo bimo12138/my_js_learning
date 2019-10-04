@@ -53,7 +53,7 @@ export default new Router({
         name: "student_grade"
       }, 
       {
-        path: "exam/:exam_no:student_no",
+        path: "exam/:exam_no/:student_no",
         component: resolve => require(["../components/student_pages/student_exam.vue"], resolve),
         name: "student_exam"
       }]
@@ -92,6 +92,11 @@ export default new Router({
         path: "loading/:exam_no",
         component: resolve => require(["../components/teacher_pages/loading_exam.vue"], resolve),
         name: "loading_exam"
+      }, 
+      {
+        path: "process_exam/:exam_no/:student_no",
+        component: resolve => require(["../components/teacher_pages/loading_exam_porocess.vue"], resolve),
+        name: "process_exam"
       }]
     }, 
     {

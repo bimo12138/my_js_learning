@@ -103,7 +103,7 @@ export default {
         },
         add_exam(exam_no) {
             this.$router.push({
-                path: "/student/exam/" + exam_no + this.$store.state.username
+                path: "/student/exam/" + exam_no + "/" + this.$store.state.username
             })
         }
     }

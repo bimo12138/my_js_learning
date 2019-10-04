@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>我的试卷</h1>
-        <el-table :data="exam_data" border empty-text="Null">
+        <el-table :data="exam_data" border empty-text="Null" v-loading="loading_status" >
             <el-table-column label="考试序号" width="80" prop="exam_no"></el-table-column>
             <el-table-column label="考试名" width="240" prop="exam_name"></el-table-column>
             <el-table-column label="考试开始时间" width="240" prop="start_time"></el-table-column>
@@ -25,7 +25,8 @@
 export default {
     data() {
         return {
-            exam_data: []
+            exam_data: [],
+            loading_status: true
         }
     },
     created() {
@@ -37,6 +38,7 @@ export default {
         .then(response => {
             if(response.data.code === 200) {
                 this.exam_data = response.data.message;
+                this.loading_status = false;
                 this.exam_data.forEach((item, index) => {
                     item.start_time = this.timestamp_to_time(item.start_time);
                     item.end_time = this.timestamp_to_time(item.end_time);

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-table :data="answer_lists" style="width: 80%">
+        <el-table :data="answer_lists" style="width: 80%" :loading="loading">
             <el-table-column prop="student_no" label="学生">
 
             </el-table-column>
@@ -25,7 +25,9 @@
 export default {
     data() {
         return {
-            answer_lists: []
+            answer_lists: [],
+            available_exam_list: [],
+            loading: false
         }
     },
     created () {
@@ -41,6 +43,15 @@ export default {
                 element.score = element.score == null? "未批阅": element.score;
             })
         })
+    },
+    methods: {
+        get_answer(e) {
+            let student_no = this.answer_lists[e].student_no;
+            let exam_no = this.answer_lists[e].exam_no;
+            this.$router.push({
+                path: "/teacher/process_exam/" + exam_no + "/" + student_no
+            })
+        }
     }
 }
 </script>
